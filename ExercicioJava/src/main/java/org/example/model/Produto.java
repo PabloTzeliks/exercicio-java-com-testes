@@ -1,6 +1,7 @@
 package org.example.model;
 
 public class Produto {
+
     private int id;
 
     private String nome;
@@ -11,7 +12,7 @@ public class Produto {
 
     private String categoria;
 
-    public Produto(){
+    public Produto() {
 
     }
 
@@ -68,5 +69,14 @@ public class Produto {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id +
+                "Nome: " + nome +
+                "Preço: " + preco +
+                "Quantidade: " + quantidade +
+                "Categoria: " + categoria;
     }
 }
