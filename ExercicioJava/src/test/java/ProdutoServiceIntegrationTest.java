@@ -1,4 +1,6 @@
 import org.example.model.Produto;
+import org.example.repository.ProdutoRepository;
+import org.example.repository.ProdutoRepositoryImpl;
 import org.example.service.ProdutoService;
 import org.example.service.ProdutoServiceImpl;
 import org.example.util.ConexaoBanco;
@@ -6,6 +8,7 @@ import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Teste de Integração - ProdutoService com Banco Real (Teste)")
 public class ProdutoServiceIntegrationTest {
 
+    private ProdutoRepository produtoRepository;
     private ProdutoService produtoService;
 
     // SQL para criar a tabela (fornecido por você)
@@ -86,7 +90,10 @@ public class ProdutoServiceIntegrationTest {
         // 6. Instancia o Service
         // Isso fará com que o Service crie seu Repositório,
         // que por sua vez usará ConexaoBanco.conectar()
-        produtoService = new ProdutoServiceImpl();
+
+        // PS* Pablo Ruan Tzeliks, injetar dependência de Repository ao Service
+        produtoRepository = new ProdutoRepositoryImpl();
+        produtoService = new ProdutoServiceImpl(produtoRepository);
     }
 
     @Test
@@ -131,7 +138,7 @@ public class ProdutoServiceIntegrationTest {
 
     @Test
     @DisplayName("Deve listar todos os produtos cadastrados")
-    void testListarProdutos() {
+    void testListarProdutos() throws SQLException {
         // ARRANGE
         produtoService.cadastrarProduto(new Produto("Teclado", 150.00, 20, "Periféricos"));
         produtoService.cadastrarProduto(new Produto("Webcam", 400.00, 5, "Eletrônicos"));
@@ -188,7 +195,7 @@ public class ProdutoServiceIntegrationTest {
 
     @Test
     @DisplayName("Deve retornar false ao tentar excluir ID inexistente")
-    void testExcluirProduto_NaoEncontrado() {
+    void testExcluirProduto_NaoEncontrado() throws SQLException {
         // ACT
         boolean resultado = produtoService.excluirProduto(999);
 
