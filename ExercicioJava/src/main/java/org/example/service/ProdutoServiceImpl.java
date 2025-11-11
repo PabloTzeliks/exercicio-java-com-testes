@@ -26,17 +26,29 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public List<Produto> listarProdutos() throws SQLException {
-        return List.of();
+
+        return produtoRepository.findAll();
     }
 
     @Override
-    public Produto buscarPorId(int id) throws SQLException {
-        return null;
+    public Produto buscarPorId(int id) throws SQLException, IllegalArgumentException {
+
+        Produto produto = produtoRepository.findById(id);
+
+        if (produto == null) {
+            throw new IllegalArgumentException("Produto de ID: " + id + ", não foi encontrado.");
+        }
+
+        return produto;
     }
 
     @Override
     public Produto atualizarProduto(Produto produto, int id) throws SQLException {
-        return null;
+
+        // Adiciona ID
+        produto.setId(id);
+
+        return produtoRepository.update(produto);
     }
 
     @Override
