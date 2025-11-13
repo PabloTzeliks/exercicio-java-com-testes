@@ -134,7 +134,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository{
     }
 
     @Override
-    public void deleteById(int id) throws SQLException {
+    public boolean deleteById(int id) throws SQLException {
 
         String queryDelete = """
                 DELETE FROM produto WHERE id = ?;
@@ -147,6 +147,11 @@ public class ProdutoRepositoryImpl implements ProdutoRepository{
 
             int rs = stmt.executeUpdate();
 
+            if (rs > 0) {
+                return true;
+            }
         }
+
+        return false;
     }
 }

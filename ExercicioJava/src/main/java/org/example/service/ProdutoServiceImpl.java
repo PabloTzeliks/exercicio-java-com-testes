@@ -35,9 +35,9 @@ public class ProdutoServiceImpl implements ProdutoService {
 
         Produto produto = produtoRepository.findById(id);
 
-        if (produto == null) {
-            throw new IllegalArgumentException("Produto de ID: " + id + ", não foi encontrado.");
-        }
+//        if (produto == null) {
+//            throw new IllegalArgumentException("Produto de ID: " + id + ", não foi encontrado.");
+//        }
 
         return produto;
     }
@@ -53,6 +53,12 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public boolean excluirProduto(int id) throws SQLException {
+
+        if (produtoRepository.deleteById(id)) {
+
+            return true;
+        }
+
         return false;
     }
 }
